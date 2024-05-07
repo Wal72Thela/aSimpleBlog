@@ -1,6 +1,160 @@
 h1 {
     border: 2px #eee solid;
-    color: brown;
+    color: blue;
     text-align: center;
     padding: 10px;
+}
+
+.card-title {
+    font-size: 1.0rem; /* Adjust for desired size */
+    color: #333; /* Example color, choose a suitable one */
+}
+
+
+.card-title-link {
+    /* Other styles for the link */
+    transition: transform 0.2s ease-in-out; /* Animation properties */
+  }
+  
+  .card-title-link:hover {
+    transform: scale(1.05); /* Animation effect on hover */
+}
+
+
+.btn-gold {
+    background-color: #DAA520; /* Gold color code */
+    color: #000; /* Black text color */
+    border-color: #DAA520; /* Gold border color */
+    /* Add other styles for button (optional) */
+}
+
+  
+
+
+
+
+
+
+
+/* Style for main page */
+
+.card {
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.badge {
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+/* Adjust margin for badges */
+.badge + .badge {
+    margin-left: 1rem;
+}
+
+/* Style for create post form */
+.container {
+    margin-top: 50px;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-control {
+    border-radius: 0; /* Remove border radius */
+}
+
+.btn-primary {
+    border-radius: 0; /* Remove border radius */
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #ff9900; /* Change background color on hover */
+    border-color: #ff9900; /* Change border color on hover */
+}
+/* Style for post view */
+.container {
+    margin-top: 50px;
+}
+
+.card {
+    border-radius: 0; /* Remove border radius */
+    border: 1px solid #dee2e6; /* Add border */
+    margin-bottom: 30px;
+}
+
+.card-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+.badge {
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+/* Adjust margin for badges */
+.badge + .badge {
+    margin-left: 1rem;
+}
+
+
+.btn-custom {
+    background-color: #ff9900; /* Orange color */
+    border-color: #ff9900; /* Border color */
+}
+
+/* Animation for button */
+.btn-animated {
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-animated:hover {
+    transform: scale(1.1); /* Scale the button on hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+
+/* Custom button color */
+.btn-custom {
+    background-color: #ff9900; /* Orange color */
+    border-color: #ff9900; /* Border color */
+}
+
+/* Animation for button */
+.btn-animated {
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-animated:hover {
+    transform: scale(1.1); /* Scale the button on hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+/* Adjust navbar spacing and links */
+.navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    color: #333; /* Text color */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ff9900; /* Orange color on hover */
 }

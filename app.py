@@ -54,5 +54,29 @@ def create():
     return render_template('create.html')
 
 
+@app.route('/<int:id>/edit', methods=('GET', 'POST'))
+def edit(id):
+    post = get_post(id)
+
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+
+        if not title:
+            flash("Title required!")
+        else:
+            connector = db_connection()
+            connector.execute('UPDATE posts SET title = ?, content = ?'
+                         ' WHERE id = ?',
+                         (title, content, id))
+            
+            connector.commit()
+            connector.close()
+            return redirect(url_for('index'))
+        
+    return render_template('edit.html', post=post)
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)

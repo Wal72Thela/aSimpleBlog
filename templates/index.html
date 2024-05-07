@@ -1,13 +1,20 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <h1>{% block title %} Welcome to aSampleBlog {% endblock %}</h1>
+<div class="container">
+    <!-- <h1 class="mt-4 mb-4 text-center">{% block title %} Welcome to aSampleBlog {% endblock %}</h1> -->
+
     {% for post in posts %}
-        <a href="{{ url_for('post', post_id=post['id']) }}">
-            <h2>
-                {{ post['title'] }}
-            </h2>
-        </a>
-        <span class="badge badge-primary">{{ post['created'] }}</span>
-        <hr>
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <a href="{{ url_for('post', post_id=post['id']) }}" class="card-title-link">
+                    <h4 class="card-title">{{ post['title'] }}</h4>
+                </a>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-secondary text-light">{{ post['created'] }}</span>
+                    <a href="{{ url_for('edit', id=post['id']) }}" class="badge bg-warning text-dark">Edit</a>
+                </div>
+            </div>
+        </div>
     {% endfor %}
+</div>
 {% endblock %}
