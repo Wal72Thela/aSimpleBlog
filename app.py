@@ -1,82 +1,89 @@
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.exceptions import abort
 
-def db_connection():
-    connector = sqlite3.connect('database.db')
-    connector.row_factory = sqlite3.Row
-    return connector
 
-def get_post(post_id):
-    connector = db_connection()
-    post = connector.execute('SELECT * FROM posts WHERE id = ?', (post_id,)).fetchone()
 
-    connector.close()
-    if post is None:
-        abort(404)
-    return post
+
+# configurations
+import secrets
+
+secret_key = secrets.token_hex(16)
 
 app = Flask(__name__)
-app.config['SECRET-KEY'] = 'For now it works'
+app.config['SECRET_KEY'] = secret_key
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return f"Post(title='{self.title}', content='{self.content}')"
+
+
+
+
+
+# routes
 
 @app.route("/")
 def index():
-    connector = db_connection()
-    posts = connector.execute('SELECT * FROM posts').fetchall()
-    connector.close()
+    posts = Post.query.all()
+    print(posts)
     return render_template("index.html", posts=posts)
 
 
 @app.route('/<int:post_id>')
 def post(post_id):
-    post = get_post(post_id)
-    return render_template('post.html',post=post)
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', post=post)
 
 
-@app.route('/create', methods =('GET', 'POST'))
+@app.route('/create', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
-        # getting the title from the form 
         title = request.form['title']
-
-        # getting content from the form
         content = request.form['content']
-
         if not title:
-            flash('Title required!')
+            flash('Title is required!')
         else:
-            connector = db_connection()
-            connector.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
-                               (title, content))
-            connector.commit()
-            connector.close()
+            new_post = Post(title=title, content=content)
+            db.session.add(new_post)
+            db.session.commit()
+            flash('Post created successfully!')
             return redirect(url_for('index'))
     return render_template('create.html')
 
 
-@app.route('/<int:id>/edit', methods=('GET', 'POST'))
+@app.route('/<int:id>/edit', methods=['GET', 'POST'])
 def edit(id):
-    post = get_post(id)
-
+    post = Post.query.get_or_404(id)
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-
-        if not title:
-            flash("Title required!")
+        post.title = request.form['title']
+        post.content = request.form['content']
+        if not post.title:
+            flash('Title is required!')
         else:
-            connector = db_connection()
-            connector.execute('UPDATE posts SET title = ?, content = ?'
-                         ' WHERE id = ?',
-                         (title, content, id))
-            
-            connector.commit()
-            connector.close()
+            db.session.commit()
+            flash('Post updated successfully!')
             return redirect(url_for('index'))
-        
     return render_template('edit.html', post=post)
 
 
 
+
+
+
+with app.app_context():
+    db.create_all()
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,port=8080)
